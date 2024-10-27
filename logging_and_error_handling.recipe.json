@@ -1,0 +1,328 @@
+{
+  "name": "Logging and Error-Handling",
+  "description": "",
+  "version": 29,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "clock",
+    "name": "scheduled_event",
+    "as": "a68ea908",
+    "title": null,
+    "description": "<span class=\"provider\">Trigger</span> every 5 minutes",
+    "keyword": "trigger",
+    "input": {
+      "time_unit": "minutes",
+      "trigger_every": "5"
+    },
+    "extended_input_schema": [
+      {
+        "control_type": "integer",
+        "default": "5",
+        "enforce_template_mode": true,
+        "extends_schema": true,
+        "hint": "Define repeating schedule. Enter whole numbers only.\n                        This field can be set to a minimum of 5 minutes.",
+        "label": "Trigger every",
+        "name": "trigger_every",
+        "optional": false,
+        "suffix": {
+          "text": "minutes"
+        },
+        "type": "string"
+      },
+      {
+        "control_type": "select",
+        "hint": "Select the timezone to use. Leave it blank to use <b>{{authUser.account_timezone}}</b>",
+        "label": "Timezone",
+        "name": "timezone",
+        "optional": true,
+        "pick_list": "timezone_id_global_pick_list",
+        "pick_list_connection_less": true,
+        "type": "string"
+      },
+      {
+        "control_type": "date_time",
+        "enforce_template_mode": true,
+        "extends_schema": true,
+        "hint": "Set date and time to start or leave blank to start immediately. <b>Once recipe has been run or tested, value cannot be changed.</b>",
+        "label": "Start after",
+        "name": "start_after",
+        "optional": true,
+        "parse_output": "date_time_conversion",
+        "since_field": true,
+        "type": "date_time",
+        "ignore_timezone": true,
+        "render_input": "date_time_conversion"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "csv_parser",
+        "name": "parse_csv",
+        "as": "9fa0d146",
+        "mask_data": true,
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "input": {
+          "col_sep": ",",
+          "skip_first_line": "true",
+          "column_value_by": "index",
+          "quote_char": "\"",
+          "csv_content": "Manufacturer, Model, Category, Item Name, Item Code, Description, Unit Cost, Unit Price, Taxable, Tax, Custom Field 1, Custom Field 2, Custom Field 3\nSierra Gardening, MS-321, Gardening supplies, Pine wood potting bench, MS-321, Oakwood potting bench, 74.50, 119.99, Yes, 0.0875, Pine, White, 30 inches\nSierra Gardening, MS-322, Gardening supplies, Cherry wood potting bench, MS-322, Oakwood potting bench, 74.50, 119.99, Yes, 0.0875, Cherry, Natural, 30 inches\nSierra Gardening, MS-323, Gardening supplies, Cedar wood potting bench, MS-323, Oakwood potting bench, 74.50, 119.99, Yes, 0.0875, Cedar, Black, 30 inches",
+          "header_schema": "[{\"control_type\":\"text\",\"label\":\"Manufacturer\",\"type\":\"string\",\"name\":\"Manufacturer\"},{\"control_type\":\"text\",\"label\":\"Model\",\"type\":\"string\",\"name\":\" Model\"},{\"control_type\":\"text\",\"label\":\"Category\",\"type\":\"string\",\"name\":\" Category\"},{\"control_type\":\"text\",\"label\":\"Item  name\",\"type\":\"string\",\"name\":\" Item Name\"},{\"control_type\":\"text\",\"label\":\"Item  code\",\"type\":\"string\",\"name\":\" Item Code\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\" Description\"},{\"control_type\":\"text\",\"label\":\"Unit  cost\",\"type\":\"string\",\"name\":\" Unit Cost\"},{\"control_type\":\"text\",\"label\":\"Unit  price\",\"type\":\"string\",\"name\":\" Unit Price\"},{\"control_type\":\"text\",\"label\":\"Taxable\",\"type\":\"string\",\"name\":\" Taxable\"},{\"control_type\":\"text\",\"label\":\"Tax\",\"type\":\"string\",\"name\":\" Tax\"},{\"control_type\":\"text\",\"label\":\"Custom  field  1\",\"type\":\"string\",\"name\":\" Custom Field 1\"},{\"control_type\":\"text\",\"label\":\"Custom  field  2\",\"type\":\"string\",\"name\":\" Custom Field 2\"},{\"control_type\":\"text\",\"label\":\"Custom  field  3\",\"type\":\"string\",\"name\":\" Custom Field 3\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Lines",
+            "name": "lines",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Manufacturer",
+                "type": "string",
+                "name": "column_0"
+              },
+              {
+                "control_type": "text",
+                "label": " Model",
+                "type": "string",
+                "name": "column_1"
+              },
+              {
+                "control_type": "text",
+                "label": " Category",
+                "type": "string",
+                "name": "column_2"
+              },
+              {
+                "control_type": "text",
+                "label": " Item Name",
+                "type": "string",
+                "name": "column_3"
+              },
+              {
+                "control_type": "text",
+                "label": " Item Code",
+                "type": "string",
+                "name": "column_4"
+              },
+              {
+                "control_type": "text",
+                "label": " Description",
+                "type": "string",
+                "name": "column_5"
+              },
+              {
+                "control_type": "text",
+                "label": " Unit Cost",
+                "type": "string",
+                "name": "column_6"
+              },
+              {
+                "control_type": "text",
+                "label": " Unit Price",
+                "type": "string",
+                "name": "column_7"
+              },
+              {
+                "control_type": "text",
+                "label": " Taxable",
+                "type": "string",
+                "name": "column_8"
+              },
+              {
+                "control_type": "text",
+                "label": " Tax",
+                "type": "string",
+                "name": "column_9"
+              },
+              {
+                "control_type": "text",
+                "label": " Custom Field 1",
+                "type": "string",
+                "name": "column_10"
+              },
+              {
+                "control_type": "text",
+                "label": " Custom Field 2",
+                "type": "string",
+                "name": "column_11"
+              },
+              {
+                "control_type": "text",
+                "label": " Custom Field 3",
+                "type": "string",
+                "name": "column_12"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "7810270a-9be7-456b-8391-3d7c107a11d1"
+      },
+      {
+        "number": 2,
+        "as": "dd300eeb",
+        "keyword": "foreach",
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 3,
+            "provider": "logger",
+            "name": "log_message",
+            "as": "e46148fa",
+            "title": null,
+            "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span> <span class=\"provider\">and Workato Logs</span>",
+            "keyword": "action",
+            "input": {
+              "user_logs_enabled": true,
+              "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"foreach\",\"line\":\"dd300eeb\",\"path\":[\"column_0\"]}')}#{_dp('{\"pill_type\":\"output\",\"provider\":\"foreach\",\"line\":\"dd300eeb\",\"path\":[\"column_1\"]}')}",
+              "log_level": "INFO"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "select",
+                "default": "INFO",
+                "disable_formula": true,
+                "hint": "Flag your message with a log level to easily find the right entry in the Workato logs.",
+                "label": "Log level",
+                "name": "log_level",
+                "ngIf": "input.user_logs_enabled == true",
+                "optional": false,
+                "pick_list": [
+                  [
+                    "INFO",
+                    "INFO"
+                  ],
+                  [
+                    "WARN",
+                    "WARN"
+                  ],
+                  [
+                    "ERROR",
+                    "ERROR"
+                  ]
+                ],
+                "type": "string"
+              },
+              {
+                "control_type": "switch",
+                "default": false,
+                "disable_formula": true,
+                "extends_schema": true,
+                "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+                "label": "Send to Workato log service",
+                "name": "user_logs_enabled",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "uuid": "e49ef4b5-9520-4103-ae0f-01062117d8cd",
+            "skip": true
+          }
+        ],
+        "source": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"csv_parser\",\"line\":\"9fa0d146\",\"path\":[\"lines\"]}')}",
+        "uuid": "6c84abfa-1fcc-4abe-82bf-1e032ee7d136",
+        "skip": true
+      },
+      {
+        "number": 4,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "19cc0ebc",
+        "title": null,
+        "description": "Call <span class=\"provider\">Simple Recipe Function</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "Simple Recipe Function"
+        },
+        "input": {
+          "flow_id": "934379",
+          "parameters": {
+            "description": "Hello"
+          }
+        },
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Description",
+                "name": "description",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "aec71877-dd4e-44fd-b29e-50b5e478102e",
+        "skip": true
+      },
+      {
+        "number": 5,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "6c6170eb",
+        "title": null,
+        "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
+        "keyword": "action",
+        "input": {
+          "user_logs_enabled": "false",
+          "message": "=_dp('{\"pill_type\":\"project_property\",\"property_name\":\"sandbox.test\"}')"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "7c43dfce-f344-41ed-aad7-10d641bffa21"
+      }
+    ],
+    "uuid": "a6fb362d-2893-4ce2-ada1-385980e7fa49",
+    "unfinished": false
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "clock",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "csv_parser",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": true,
+      "account_id": null
+    }
+  ]
+}
