@@ -1,7 +1,7 @@
 {
   "name": "Simple Recipe Function",
   "description": "",
-  "version": 3,
+  "version": 4,
   "private": true,
   "concurrency": 1,
   "code": {
@@ -83,6 +83,7 @@
             "type": "string"
           }
         ],
+        "comment": "123",
         "uuid": "e1dcaf66-7d3c-4349-a520-b2ff7cfb4375"
       },
       {
